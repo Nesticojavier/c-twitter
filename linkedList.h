@@ -4,22 +4,19 @@
 typedef struct node
 {
     void *value;
-    struct node *next;   
+    struct node *next;
 } Node;
-
 
 typedef struct linkedList
 {
-    Node* head;
-    int size; 
+    Node *head;
+    int size;
 } LinkedList;
 
-
-LinkedList* create_List();
-Node* create_node(void *value);
-void push_node(LinkedList* list, Node* node);
-void insert_List(LinkedList* list, void *value);
-void print_list(LinkedList* list);
-
+Node *create_node(void *value);
+void push_node(LinkedList *list, Node *node);
+LinkedList *create_list();
+void insert_list(LinkedList *list, void *value);
+void print_list(LinkedList *list);
 
 #endif

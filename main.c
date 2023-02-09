@@ -1,51 +1,119 @@
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include "linkedList.h"
 #include "user.h"
 
 int main()
 {
-    /* Metodo que crea una lista Enlazada */
-    LinkedList *list = create_List();
+    srand (time(NULL));  
 
-    /* Crear Usuarios */
+    /* NOTA: Falta Implementar Tabla hash.*/
 
-    /* Usuario 1 */
-    User *pedrito = (User *)malloc(sizeof(User));
-    pedrito->username = "pedrito";
-    pedrito->password_encrypted = "pedritopassword";
+    /* Falta Hacer login */
 
-    /* Usuario 2 */
-    User *Juan1 = (User *)malloc(sizeof(User));
-    Juan1->username = "JUAN1";
-    Juan1->password_encrypted = "JUAN1PASSWORD";
+    /* Crear 10 usuarios random */
+    char users[10][10];
+    char password[10][10];
 
-    /* Usuario 3 */
-    User *Juan2 = (User *)malloc(sizeof(User));
-    Juan2->username = "Juan2";
-    Juan2->password_encrypted = "Juan2password";
+    /* Generar usuarios y contrasenas para testear*/
+    char i = 0;
+    while (i < 10)
+    {
+        char username[10] = "nombre";
+        char pwd[10] = "pass";
 
-    /* Usuario 4 */
-    User *Juan3 = (User *)malloc(sizeof(User));
-    Juan3->username = "Juan3";
-    Juan3->password_encrypted = "Juan3password";
+        /* Anadir Caracteres */
+        char charRand = 'A' + rand() % 20;
+        char count = i + '0';
+        strncat(username, &count, 1);
+        strncat(username, &charRand, 1);
+        strncat(pwd, &count, 1);
+        strncat(pwd, &charRand, 1);
+        strcpy(users[i], username);
+        strcpy(password[i], pwd);
+        i++;
+    }
 
-    /* Usuario 5 */
-    User *Juan4 = (User *)malloc(sizeof(User));
-    Juan4->username = "Juan4";
-    Juan4->password_encrypted = "Juan4password";
 
-    insert_List(list, pedrito);
-    insert_List(list, Juan1);
-    insert_List(list, Juan2);
-    insert_List(list, Juan3);
-    insert_List(list, Juan4);
+    /* PROGRAMA  */
+    /* La tabla Hash debe ser un array de LinkedList */
+    /* Como aun no se ha implementado la tabla hash, almacenare todos los users
+    en una lista enlazada */
+    LinkedList *listInBucket = create_list();
 
-    /* Esta funcion debe ser modificada para poder imprimir. Ver linkedList.c */
-    print_list(list);
+    int j;
+    for (j = 0; j < 10; j++) {
 
+        /*              CREAR USER           */
+
+        /* Funcion para insertar en la tabla hash */
+        /* insert_in_HashTable(HashTable* tabla, User*??? HashItem) */
+            /* Comportamiento de la funcion: */
+
+            /* Hashear username para encontrar el bucket donde debe ser guardado */
+
+
+            /* Buscar el user en la lista enlazada que esta en ese bucket */
+            if (search_user(listInBucket, users[j]) != NULL) {
+                printf("El usuario ya esta registrado\n");
+                continue;
+            }
+
+            /* Si no se encuentra el username: Se crea el user */
+            User *user = create_user(users[j], password[j]);
+            /* NOTA: Falta Cifrar el password. Esto se puede hacer dentro de create_user */
+            /* Se inserta en la lista */
+            insert_list(listInBucket, user);
+    }
+
+    printf("\tUsuarios en el bucket: %d\n", listInBucket->size);
+
+    /* Esta funcion debe ser modificada para poder imprimir.
+    Actualmente Imprime objetos tipo User. Ver linkedList.c */
+    print_list(listInBucket);
     printf("\n");
-    printf("Size of list: %d ", list->size);
+
+
+    /* Fin del programa */
+
+
+    /* Testing Add Followers */
+    int randomIndexUser = rand() % 10; /* Numero entre 0 y 10 */
+
+    /* Seleccionar un usuario aleatorio */
+    char *username = users[randomIndexUser];
+    User* user = search_user(listInBucket, username);
+
+    printf("Testing anadir seguidos por un user\n");
+    printf("\tSeleccionar un usuario random: %s\n", user->username );
+
+    /* Seleccionar 10 usuarios Aleatorios a seguir */
+    int x;
+    for (x = 0; x < 10; x++) {
+        /* Seleccionar un usuario aleatorio a seguir */
+        int randomIndexFollow = rand() % 10; /* Numero entre 0 y 10 */
+        char *usernameToFollow = users[randomIndexFollow];
+        User* userToFollow = search_user(listInBucket, usernameToFollow);
+        printf("\t\tBuscar Usuario a seguir: %s\n", userToFollow->username);
+         
+        printf("\t\t");
+
+        if (follow_user(user, userToFollow) == 1) {
+            printf("Seguido con exito\n", userToFollow->username);
+        }
+    }
+    
+
+    printf("\nSeguidos por:  %s\n", user->username);
+    printf("\nNumero de seguidos:  %d\n", user->following->size);
+
+    print_list(user->following);
+
+
+
+
+
 
     return 0;
 }

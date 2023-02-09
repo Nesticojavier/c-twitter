@@ -23,7 +23,7 @@ void push_node(LinkedList *list, Node *node)
 }
 
 /* Funcion que crea la Lista Enlazada  */
-LinkedList *create_List()
+LinkedList *create_list()
 {
     LinkedList *list = (LinkedList *)malloc(sizeof(LinkedList));
     Node *head = (Node *)malloc(sizeof(Node));
@@ -33,24 +33,28 @@ LinkedList *create_List()
     return list;
 }
 
-/* Recibe la direccion de memoria de lo que se desea guardar */
-void insert_List(LinkedList *list, void *value)
+/* Recibe la direccion de memoria de lo que se desea guardar. Se inserta sin verificar si el elemento esta en la lista*/
+void insert_list(LinkedList *list, void *value)
 {
     Node *node = create_node(value);
     push_node(list, node);
     list->size += 1;
 }
 
-/* Funcion usada para Testear. Imprime los datos de la lista, pero requiere casting de la variable x para imprimir diferentes tipos de daots sin error */
+/* Funcion usada para imprimir La lista. Actualmente imprime objetos tipo User.
+Nota: requiere casting de la variable element para imprimir diferentes tipos de datos sin error */
 void print_list(LinkedList *list)
 {
     /* Head de la lista */
     Node *node = list->head->next;
     while (node != NULL)
     {
-        /* Para imprimir, castear dependiendo del tipo de dato */
+        /* NOTA: */
+        /* Para imprimir, SE DEBE Castear dependiendo del tipo de dato */
         User *element = (User *)node->value;
-        printf("%s->", element->username);
+        printf("%s: %s\n", element->username, element->password_encrypted);
+
         node = node->next;
     }
 }
+
