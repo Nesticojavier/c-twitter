@@ -16,11 +16,10 @@ typedef struct linkedList
 
 
 LinkedList* create_List();
-
-/* Recibe la direccion de memoria de lo que se desea guardar */
 Node* create_node(void *value);
 void push_node(LinkedList* list, Node* node);
 void insert_List(LinkedList* list, void *value);
 void print_list(LinkedList* list);
+
 
 #endif
