@@ -3,12 +3,13 @@
 
 int main()
 {
+    /* Metodo que crea una lista Enlazada */
     LinkedList* list = create_List();
     int valor = 10;
-    int x1 = 10;
+    char x1 = 'a';
 
-    int x2 = 20;
-    int x3 = 30;
+    char x2 = 'b';
+    char x3 = 'c';
 
 
 

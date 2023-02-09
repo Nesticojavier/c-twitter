@@ -35,11 +35,12 @@ void insert_List(LinkedList* list, void *value) {
     list->size += 1;
 }
 
+/* Funcion usada para Testear. Imprime los datos de la lista, pero requiere casting para imprimir sin error */
 void print_list(LinkedList* list) {
     Node* aux = list->head->next;
     while (aux != NULL) {
-        int x = *(aux->value);
-        printf("%d->", x);
+        char *x = (char *) aux->value;
+        printf("%c->", *x);
         aux = aux->next;
     }
 
