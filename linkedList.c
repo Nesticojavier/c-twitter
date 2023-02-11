@@ -52,7 +52,7 @@ void print_list(LinkedList *list)
         /* NOTA: */
         /* Para imprimir, SE DEBE Castear dependiendo del tipo de dato */
         User *element = (User *)node->value;
-        printf("%s: %s\n", element->username, element->password_encrypted);
+        printf("%s: %d\n", element->username, element->password_hash);
 
         node = node->next;
     }

@@ -5,12 +5,12 @@
 typedef struct user
 {
     char *username;
-    char *password_encrypted;
+    int password_hash;
     LinkedList *tweets;
     LinkedList *following;
 } User;
 
-User* create_user(char username[], char password[]);
+User* create_user(char username[], int password);
 User* search_user(LinkedList* list, char username[]);
 int follow_user(User* user, User* followed);
 

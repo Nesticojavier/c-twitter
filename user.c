@@ -5,13 +5,13 @@
 #include "linkedList.h"
 
 /* Crea un Usuario. Retorna el apuntador de ese usuario */
-User *create_user(char username[], char password[])
+User *create_user(char username[], int password)
 {
     /* Pendiente encriptar password */
     /* Pendiente definir Linked List de Tweets*/
     User *user = (User *)malloc(sizeof(User));
     user->username = username;
-    user->password_encrypted = password;
+    user->password_hash = password;
     user->following = create_list();
     return user;
 }
