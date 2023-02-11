@@ -6,7 +6,7 @@
 
 int main()
 {
-    srand (time(NULL));  
+    // srand (time(NULL));  
 
     /* NOTA: Falta Implementar Tabla hash.*/
 
@@ -100,7 +100,7 @@ int main()
         printf("\t\t");
 
         if (follow_user(user, userToFollow) == 1) {
-            printf("Seguido con exito\n", userToFollow->username);
+            printf("Seguido con exito\n");
         }
     }
     
