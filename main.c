@@ -10,42 +10,57 @@
 #define MAX_TABLE_LENGTH 10
 
 int main() {
+    int index;
+    char input[15];
+    LinkedList *hashTable[MAX_TABLE_LENGTH];
 
     /* creacion de la tabla hash como un array de listas enlazadas */
-    LinkedList *hashTable[MAX_TABLE_LENGTH];
     int i;
     for (i = 0; i < 10; i++) {
         hashTable[i] = create_list();
     }
 
-    printf("###################### TEST login #####################\n");
+    while (1) {
+        printf("DON'T MISS WHAT'S HAPPENING! LOGIN, SIGNUP OR LEAVE\n");
+        printf(">");
+        scanf("%s", input);
 
-    int index;
-    for (i = 0; i < 3; i++) {
-/*         char *username = malloc(MAX_USER_LENGTH);
-        char *password = malloc(MAX_PASSWORD_LENGTH);
- */
-        char *username = malloc(MAX_USER_LENGTH);
-        char *password = malloc(MAX_PASSWORD_LENGTH);
-        printf("Nombre de usuario: ");
-        scanf("%s", username);
-        fflush(stdin);
-        printf("Contraseña: ");
-        scanf("%s", password);
-        fflush(stdin);
+        if (strcmp(input, "login") == 0) {
+            // TODO: hacer verificacion de login
+            // TODO: timeline del usuario con los tweets de las personas que sigue
+            // TODO: WHAT'S HAPPENING?
+            // TODO:    - + "tweet del usuario logeado"
+            // TODO:    - @user: entrar en perfil de user   
+            // TODO:        -imprimir todos sus tweets
+            // TODO:        -follow
+            // TODO:        -back
+            // TODO:    - logout cerrar sesion
 
-        /* obtener indice de la tabla donde estará contenida */
-        index = hash(password);
+            printf("Falta hacer el login\n");
+        } else if (strcmp(input, "signup") == 0) {
+            char *username = malloc(MAX_USER_LENGTH);
+            char *password = malloc(MAX_PASSWORD_LENGTH);
+            printf("USERNAME: ");
+            scanf("%s", username);
+            printf("PASSWORD: ");
+            scanf("%s", password);
 
-        /* Crear user */
-        User *user = create_user(username, index);
+            // TODO: verificar si el usuario ya está registrado
 
-        /* almacenar en la tabla hash */
-        insert_list(hashTable[0], user);
+            /* obtener indice de la tabla donde estará contenida */
+            index = hash(password);
+
+            /* Crear user */
+            User *user = create_user(username, index);
+
+            /* almacenar en la tabla hash */
+            insert_list(hashTable[index], user);
+        }else if (strcmp(input, "leave") == 0) {
+            break;
+        } else {
+            printf("Debe indicar una de las opciones validas\n");
+        }
     }
-
-    printf("\tUsuarios en el bucket: %d\n", hashTable[0]->size);
-    print_list(hashTable[0]);
 
     return 0;
 }
