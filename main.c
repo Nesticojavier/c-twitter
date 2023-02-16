@@ -4,7 +4,9 @@
 #include "linkedList.h"
 #include "user.h"
 #include "hashTable.h"
+#include <time.h>
 
+#define LC_TIME 5
 #define MAX_PASSWORD_LENGTH 10
 #define MAX_USER_LENGTH 10
 #define MAX_TABLE_LENGTH 10
@@ -15,9 +17,13 @@ void login();
 void signup();
 void timeline(User* user);
 char comandos[15];
-char tweet[MAX_TWEET_LENGHT];
+char comandosPerfil[15];
+char buscar[15];
 char input[15];
 LinkedList *hashTable[MAX_TABLE_LENGTH];
+time_t tiempo;
+char cad[80];
+struct tm *tmPtr;
 
 /**
  * It's a function that asks the user to login, signup or leave. If the user chooses to login, it calls
@@ -25,7 +31,7 @@ LinkedList *hashTable[MAX_TABLE_LENGTH];
  * to leave, it breaks the loop and ends the function.
  */
 void function(){
-    while (1) {
+    
         printf("DON'T MISS WHAT'S HAPPENING! LOGIN, SIGNUP OR LEAVE\n");
         printf(">");
         scanf("%s", input);
@@ -36,13 +42,14 @@ void function(){
         else if (strcmp(input, "signup") == 0) {
             signup();
         }else if (strcmp(input, "leave") == 0) {
-            break;
+            EXIT_SUCCESS;
         } else {
             printf("Debe indicar una de las opciones validas\n");
+            function();
         }
        
        
-    }
+    
 
 }
 
@@ -56,20 +63,68 @@ void function(){
 de un user en especifico.
 Como imprimir Tweets, seguir otros usuarios, etc. */
 void timeline(User* user){
+    tiempo = time(NULL);
+    tmPtr = localtime(&tiempo);
+    strftime( cad, 80, "%I:%M, %d/%m/%y", tmPtr );
     printf("WHAT’S HAPPENING %s?\n", user->username);
     printf("+--------------------+-------------------+\n");
-    /*TODO: timeline del usuario con los tweets de las personas que sigue*/
-    printf("   +");
-    printf("                 @");
-    printf("           logout\n");
+    /*TODO: timeline del usuario con los tweets de las personas que sigue y los de el*/
+    /*if(user->tweets){
+        printf(">");
+        print_list(user->tweets);
+    }*/
+    printf("+");
+    printf("(El texto a continuación es un tweet)\n");
+    printf("@");
+    printf("(El texto a continuación es un nombre de usuario cuyo perfil se desea ver)\n");
+    printf("logout\n");
     printf("+--------------------+-------------------+\n");
     printf(">");
     scanf("%s", comandos);
+    
     if(strcmp(comandos,  "+") == 0){
-        printf("El texto a continuación es un tweet\n");
-        scanf("%s", tweet);
-       }else if(strcmp(comandos, "@") == 0){
-        printf("El texto a continuación es un nombre de usuario cuyo perfil se desea ver\n");
+        char *tweet = malloc(MAX_TWEET_LENGHT);
+        
+        fgets(tweet, MAX_TWEET_LENGHT, stdin);
+        puts(tweet);
+        printf("@%s: %s\n", user->username, cad);
+
+        /*TODO: falta guardar la lista de los tweets del usuario*/
+        timeline(user);
+
+    }else if(strcmp(comandos, "@") == 0){
+        User* perfil;
+        int index;
+        
+        fgets(buscar, 15, stdin);
+
+        index = hash(buscar);
+        perfil = search_user(hashTable[index],buscar);
+
+        if (perfil)
+        {
+
+            printf("Perfil de %s\n", perfil->username);
+            /*TODO: falta mostrar los tweets del perfil a buscar*/
+             printf("+--------------------+-------------------+\n");
+            printf("follow");
+            printf("                 back\n");
+            printf("+--------------------+-------------------+\n");
+            printf(">");
+            scanf("%s", comandosPerfil);
+            if(strcmp(comandosPerfil,  "follow") == 0){
+                follow_user(user,perfil);
+                timeline(user);
+            }else if(strcmp(comandosPerfil,  "back") == 0){
+                /* Vuelve al timeline del usuario */
+                timeline(user);
+            }
+
+        }else{
+            printf("Ingreso un usuario que no existe\n");
+            timeline(user);
+        }
+        
     }else if (strcmp(comandos, "logout") == 0){
         /*Vuelve al prompt inicial*/
         function();
@@ -80,8 +135,6 @@ void timeline(User* user){
     /* TODO:    - + "tweet del usuario logeado"*/
     /* TODO:    - @user: entrar en perfil de user   */
     /* TODO:        -imprimir todos sus tweets*/
-    /* TODO:        -follow*/
-    /* TODO:        -back*/
 
     printf("Falta hacer el login\n");
 }
@@ -126,7 +179,6 @@ void signup(){
     printf("PASSWORD: ");
     scanf("%s", password);
 
-    /*TODO: verificar si el usuario ya está registrado*/
     index = hash(username);
 
     if(search_user(hashTable[index], username) ){

@@ -12,6 +12,7 @@ User *create_user(char username[], int password){
     user->username = username;
     user->password_hash = password;
     user->following = create_list();
+    user->tweets = create_list();
     return user;
 }
 
