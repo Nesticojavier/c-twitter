@@ -90,7 +90,7 @@ void timeline(User* user){
  * It takes a string and returns a hash of that string
  */
 void login(){
-    int index;
+    int index, password_hash;
     User* user;
     char *username = malloc(MAX_USER_LENGTH);
     char *password = malloc(MAX_PASSWORD_LENGTH);
@@ -103,9 +103,9 @@ void login(){
     index = hash(username);
 
     user = search_user(hashTable[index],username);
-    if(user){
-           timeline(user);
 
+    if(user && hash(password) == user->password_hash ) {;
+        timeline(user);
     } else {
         printf("USERNAME OR PASSWORD INVALID\n");
         login();
@@ -129,7 +129,6 @@ void signup(){
 
     /*TODO: verificar si el usuario ya está registrado*/
     index = hash(username);
-    printf("Index: %d\n", index);
 
     if(search_user(hashTable[index], username) ){
         printf("USERNAME already taken\n");
