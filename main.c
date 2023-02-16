@@ -57,23 +57,24 @@ de un user en especifico.
 Como imprimir Tweets, seguir otros usuarios, etc. */
 void timeline(User* user){
     printf("WHAT’S HAPPENING %s?\n", user->username);
-    printf("+--------------------+---------------+\n");
+    printf("+--------------------+-------------------+\n");
     /*TODO: timeline del usuario con los tweets de las personas que sigue*/
-    printf("+");
-    printf("                    @");
-    printf("                    logout\n");
-    printf("+--------------------+---------------+\n");
+    printf("   +");
+    printf("                 @");
+    printf("           logout\n");
+    printf("+--------------------+-------------------+\n");
+    printf(">");
+    scanf("%s", comandos);
     if(strcmp(comandos,  "+") == 0){
-        printf("El texto a continuación es un tweet");
+        printf("El texto a continuación es un tweet\n");
         scanf("%s", tweet);
        }else if(strcmp(comandos, "@") == 0){
-        printf("El texto a continuación es un nombre de usuario cuyo perfil se desea ver");
+        printf("El texto a continuación es un nombre de usuario cuyo perfil se desea ver\n");
     }else if (strcmp(comandos, "logout") == 0){
         /*Vuelve al prompt inicial*/
         function();
     }
-    printf("+--------------------+---------------+\n");
-    /* TODO: hacer verificacion de login*/
+    printf("+--------------------+-------------------+\n");
     /* TODO: timeline del usuario con los tweets de las personas que sigue*/
     /* TODO: WHAT'S HAPPENING?*/
     /* TODO:    - + "tweet del usuario logeado"*/
@@ -81,7 +82,6 @@ void timeline(User* user){
     /* TODO:        -imprimir todos sus tweets*/
     /* TODO:        -follow*/
     /* TODO:        -back*/
-    /* TODO:    - logout cerrar sesion*/
 
     printf("Falta hacer el login\n");
 }
@@ -104,14 +104,13 @@ void login(){
 
     user = search_user(hashTable[index],username);
 
-    if(user && hash(password) == user->password_hash ) {;
+    if(user && hash(password) == user->password_hash ) {
+        /*Timeline del usuario*/
         timeline(user);
     } else {
         printf("USERNAME OR PASSWORD INVALID\n");
         login();
     }
-    
-    /*Timeline del usuario*/
 }
 
 /**
