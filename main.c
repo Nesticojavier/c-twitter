@@ -11,6 +11,9 @@
 #define MAX_TWEET_LENGHT 280
 
 /* Declaring the variables that will be used in the program. */
+void login();
+void signup();
+void timeline(User* user);
 char comandos[15];
 char tweet[MAX_TWEET_LENGHT];
 char input[15];
@@ -47,8 +50,13 @@ void function(){
  * It prints a menu with the options: +, @, logout. If the user types +, it asks for a tweet, if the
  * user types @, it asks for a username, if the user types logout, it returns to the main menu
  */
-void timeline(){
-    printf("WHAT’S HAPPENING?\n");
+
+/* ######################## NOTA ################################## */
+/* Se le anade el parametro user, para asi poder acceder a las funciones
+de un user en especifico.
+Como imprimir Tweets, seguir otros usuarios, etc. */
+void timeline(User* user){
+    printf("WHAT’S HAPPENING %s?\n", user->username);
     printf("+--------------------+---------------+\n");
     /*TODO: timeline del usuario con los tweets de las personas que sigue*/
     printf("+");
@@ -82,23 +90,28 @@ void timeline(){
  * It takes a string and returns a hash of that string
  */
 void login(){
-    int i;
+    int index;
+    User* user;
     char *username = malloc(MAX_USER_LENGTH);
     char *password = malloc(MAX_PASSWORD_LENGTH);
     printf("USERNAME: ");
     scanf("%s", username);
     printf("PASSWORD: ");
     scanf("%s", password);
-    for(i=0; i < MAX_TABLE_LENGTH ; i++ ){
-        if(search_user(hashTable[i],username)){
-            continue;
-        }else{
-            printf("USERNAME OR PASSWORD INVALID\n");
-            login();
-        }
+    
+
+    index = hash(username);
+
+    user = search_user(hashTable[index],username);
+    if(user){
+           timeline(user);
+
+    } else {
+        printf("USERNAME OR PASSWORD INVALID\n");
+        login();
     }
+    
     /*Timeline del usuario*/
-    timeline();
 }
 
 /**
@@ -106,7 +119,7 @@ void login(){
  */
 void signup(){
     int index;
-    int i;
+    int password_hash;
     char *username = malloc(MAX_USER_LENGTH);
     char *password = malloc(MAX_PASSWORD_LENGTH);
     printf("USERNAME: ");
@@ -115,24 +128,26 @@ void signup(){
     scanf("%s", password);
 
     /*TODO: verificar si el usuario ya está registrado*/
-    for(i=0; i < MAX_TABLE_LENGTH ; i++ ){
-        if(search_user(hashTable[i],username)){
-            printf("USERNAME already taken\n");
-            signup();
-        }else{
-            /* obtener indice de la tabla donde estará contenida */
-            index = hash(password);
+    index = hash(username);
+    printf("Index: %d\n", index);
 
-            /* Crear user */
-            User *user = create_user(username, index);
+    if(search_user(hashTable[index], username) ){
+        printf("USERNAME already taken\n");
+        signup();
+    } else {
+        /* obtener indice de la tabla donde estará contenida */
+        password_hash = hash(password);
 
-            /* almacenar en la tabla hash */
-            insert_list(hashTable[index], user);
+        /* Crear user */
+        User *user = create_user(username, password_hash);
 
-            /*Vuelve al prompt inical*/
-            function();
-        }
+        /* almacenar en la tabla hash */
+        insert_list(hashTable[index], user);
+
+        /*Vuelve al prompt inical*/
+        function();
     }
+    
 }
 
 int main() {
@@ -140,7 +155,7 @@ int main() {
     /* creacion de la tabla hash como un array de listas enlazadas */
 
     int i;
-    for (i = 0; i < 10; i++) {
+    for (i = 0; i < MAX_TABLE_LENGTH; i++) {
         hashTable[i] = create_list();
     }
    
