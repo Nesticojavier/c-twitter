@@ -15,7 +15,7 @@ int main() {
         hashTable[i] = create_list();
     }
    
-    // usuario loggeado de prueba1:
+    /* usuario loggeado de prueba1: */
     char *username = malloc(MAX_USER_LENGTH);
     char *password = malloc(MAX_PASSWORD_LENGTH);
     username = "nestor";
@@ -25,7 +25,7 @@ int main() {
     User *user = create_user(username, password_hash);
     insert_list(hashTable[index], user);
 
-    // usuario loggeado de prueba2:
+    /* usuario loggeado de prueba2: */
     username = malloc(MAX_USER_LENGTH);
     password = malloc(MAX_PASSWORD_LENGTH);
     username = "felix";

@@ -45,13 +45,8 @@ void timeline(User* user){
     tiempo = time(NULL);
     tmPtr = localtime(&tiempo);
     strftime( cad, 80, "%I:%M, %d/%m/%y", tmPtr );
-    printf("WHAT’S HAPPENING %s?\n", user->username);
+    printf("WHAT'S HAPPENING %s?\n", user->username);
     printf("+--------------------+-------------------+\n");
-    /*TODO: timeline del usuario con los tweets de las personas que sigue y los de el*/
-    /*if(user->tweets){
-        printf(">");
-        print_list(user->tweets);
-    }*/
     printf("+");
     printf("(El texto a continuación es un tweet)\n");
     printf("@");
@@ -59,7 +54,6 @@ void timeline(User* user){
     printf("logout\n");
     printf("+--------------------+-------------------+\n");
     printf(">");
-    // scanf("%s", comandos);
 
     fflush(stdin);
     fgets(comandosLogged, sizeof(comandosLogged), stdin);
@@ -70,12 +64,6 @@ void timeline(User* user){
         char tweet[strlen(comandosLogged)-1];
         strcpy(tweet, &comandosLogged[1]); 
         insert_list(user->tweets, tweet);
-
-        // char *tweet = malloc(MAX_TWEET_LENGHT);
-        // fgets(tweet, MAX_TWEET_LENGHT, stdin);
-        // puts(tweet);
-        // printf("@%s: %s\n", user->username, cad);
-
         timeline(user);
 
     }else if(comandosLogged[0] == '@'){
@@ -84,7 +72,6 @@ void timeline(User* user){
 
         index = hash(&comandosLogged[1]);
         perfil = search_user(hashTable[index],&comandosLogged[1]);
-        // printf("user buscado: %s\n", perfil->username);
         if (perfil)
         {
 
@@ -120,12 +107,6 @@ void timeline(User* user){
         printf("Debe ingresar una de las opciones validas\n");
         timeline(user);
     }
-    // printf("+--------------------+-------------------+\n");
-    /* TODO: timeline del usuario con los tweets de las personas que sigue*/
-    /* TODO: WHAT'S HAPPENING?*/
-    /* TODO:    - + "tweet del usuario logeado"*/
-    /* TODO:    - @user: entrar en perfil de user   */
-    /* TODO:        -imprimir todos sus tweets*/
 }
 
 /**
