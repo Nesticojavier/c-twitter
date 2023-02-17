@@ -16,8 +16,10 @@
 void login();
 void signup();
 void timeline(User* user);
-char comandos[30];
+char comandos[15];
 char comandosPerfil[15];
+char comandosLogged[MAX_TWEET_LENGHT + 1];
+
 char buscar[15];
 char input[15];
 LinkedList *hashTable[MAX_TABLE_LENGTH];
@@ -79,39 +81,37 @@ void timeline(User* user){
     printf(">");
     // scanf("%s", comandos);
 
-    printf("aqui deberia pedir");
-    fgets(comandos, sizeof(comandos), stdin);
-    comandos[strcspn(comandos, "\n")] = '\0';
+    fflush(stdin);
+    fgets(comandosLogged, sizeof(comandosLogged), stdin);
+    comandosLogged[strcspn(comandosLogged, "\n")] = '\0';
 
-    if(comandos[0] == '+'){
+    if(comandosLogged[0] == '+'){
 
-        char copy[strlen(comandos)-1];
-        strcpy(copy, &comandos[1]); 
-        insert_list(user->tweets, copy);
+        char tweet[strlen(comandosLogged)-1];
+        strcpy(tweet, &comandosLogged[1]); 
+        insert_list(user->tweets, tweet);
 
         // char *tweet = malloc(MAX_TWEET_LENGHT);
         // fgets(tweet, MAX_TWEET_LENGHT, stdin);
         // puts(tweet);
         // printf("@%s: %s\n", user->username, cad);
 
-        /*TODO: falta guardar la lista de los tweets del usuario*/
         timeline(user);
 
-    }else if(strcmp(comandos, "@") == 0){
+    }else if(comandosLogged[0] == '@'){
         User* perfil;
         int index;
-        
-        fgets(buscar, 15, stdin);
 
-        index = hash(buscar);
-        perfil = search_user(hashTable[index],buscar);
-
+        index = hash(&comandosLogged[1]);
+        perfil = search_user(hashTable[index],&comandosLogged[1]);
+        // printf("user buscado: %s\n", perfil->username);
         if (perfil)
         {
 
             printf("Perfil de %s\n", perfil->username);
             /*TODO: falta mostrar los tweets del perfil a buscar*/
-             printf("+--------------------+-------------------+\n");
+            print_tweets_list(perfil->tweets, &comandosLogged[1]);
+            printf("+--------------------+-------------------+\n");
             printf("follow");
             printf("                 back\n");
             printf("+--------------------+-------------------+\n");
@@ -121,7 +121,10 @@ void timeline(User* user){
                 follow_user(user,perfil);
                 timeline(user);
             }else if(strcmp(comandosPerfil,  "back") == 0){
-                /* Vuelve al timeline del usuario */
+                /* Vuelve al timeline del usuario loggeado*/
+                timeline(user);
+            } else{
+                printf("Ha salido del perfil\n");
                 timeline(user);
             }
 
@@ -130,14 +133,14 @@ void timeline(User* user){
             timeline(user);
         }
         
-    }else if (strcmp(comandos, "logout") == 0){
+    }else if (strcmp(comandosLogged, "logout") == 0){
         /*Vuelve al prompt inicial*/
         function();
-    }else if (strcmp(comandos, "print") == 0) { //para testear imprimiendo la lista de twits
-        printf("\nel comando introducido fue: %s\n", comandos);
-        print_tweets_list(user->tweets);
+    } else {
+        printf("Debe ingresar una de las opciones validas\n");
+        timeline(user);
     }
-    printf("+--------------------+-------------------+\n");
+    // printf("+--------------------+-------------------+\n");
     /* TODO: timeline del usuario con los tweets de las personas que sigue*/
     /* TODO: WHAT'S HAPPENING?*/
     /* TODO:    - + "tweet del usuario logeado"*/
@@ -165,6 +168,7 @@ void login(){
 
     if(user && hash(password) == user->password_hash ) {
         /*Timeline del usuario*/
+        print_tweets_users_list(user->following);
         timeline(user);
     } else {
         printf("USERNAME OR PASSWORD INVALID\n");
@@ -215,7 +219,25 @@ int main() {
         hashTable[i] = create_list();
     }
    
+    // usuario loggeado de prueba1:
+    char *username = malloc(MAX_USER_LENGTH);
+    char *password = malloc(MAX_PASSWORD_LENGTH);
+    username = "nestor";
+    password = "hola";
+    int index = hash(username);
+    int password_hash = hash(password);
+    User *user = create_user(username, password_hash);
+    insert_list(hashTable[index], user);
 
+    // usuario loggeado de prueba2:
+    username = malloc(MAX_USER_LENGTH);
+    password = malloc(MAX_PASSWORD_LENGTH);
+    username = "felix";
+    password = "jkl";
+    index = hash(username);
+    password_hash = hash(password);
+    user = create_user(username, password_hash);
+    insert_list(hashTable[index], user);
 
     /* It's a function that asks the user to login, signup or leave. If the user chooses to login, it
     calls

@@ -58,7 +58,7 @@ void print_list(LinkedList *list)
     }
 }
 
-void print_tweets_list(LinkedList *list)
+void print_tweets_list(LinkedList *list, char *name)
 {
     /* Head de la lista */
     Node *node = list->head->next;
@@ -67,7 +67,22 @@ void print_tweets_list(LinkedList *list)
         /* NOTA: */
         /* Para imprimir, SE DEBE Castear dependiendo del tipo de dato */
         char *element = (char *)node->value;
-        printf("%s\n", element);
+        printf("@%s tuiteó: %s\n", name ,element);
+
+        node = node->next;
+    }
+}
+
+void print_tweets_users_list(LinkedList *list)
+{
+    /* Head de la lista */
+    Node *node = list->head->next;
+    while (node != NULL)
+    {
+        /* NOTA: */
+        /* Para imprimir, SE DEBE Castear dependiendo del tipo de dato */
+        User *element = (User *)node->value;
+        print_tweets_list(element->tweets, element->username);
 
         node = node->next;
     }
