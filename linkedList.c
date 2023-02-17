@@ -58,3 +58,17 @@ void print_list(LinkedList *list)
     }
 }
 
+void print_tweets_list(LinkedList *list)
+{
+    /* Head de la lista */
+    Node *node = list->head->next;
+    while (node != NULL)
+    {
+        /* NOTA: */
+        /* Para imprimir, SE DEBE Castear dependiendo del tipo de dato */
+        char *element = (char *)node->value;
+        printf("%s\n", element);
+
+        node = node->next;
+    }
+}

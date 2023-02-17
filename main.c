@@ -16,7 +16,7 @@
 void login();
 void signup();
 void timeline(User* user);
-char comandos[15];
+char comandos[30];
 char comandosPerfil[15];
 char buscar[15];
 char input[15];
@@ -47,9 +47,6 @@ void function(){
             printf("Debe indicar una de las opciones validas\n");
             function();
         }
-       
-       
-    
 
 }
 
@@ -80,14 +77,22 @@ void timeline(User* user){
     printf("logout\n");
     printf("+--------------------+-------------------+\n");
     printf(">");
-    scanf("%s", comandos);
-    
-    if(strcmp(comandos,  "+") == 0){
-        char *tweet = malloc(MAX_TWEET_LENGHT);
-        
-        fgets(tweet, MAX_TWEET_LENGHT, stdin);
-        puts(tweet);
-        printf("@%s: %s\n", user->username, cad);
+    // scanf("%s", comandos);
+
+    printf("aqui deberia pedir");
+    fgets(comandos, sizeof(comandos), stdin);
+    comandos[strcspn(comandos, "\n")] = '\0';
+
+    if(comandos[0] == '+'){
+
+        char copy[strlen(comandos)-1];
+        strcpy(copy, &comandos[1]); 
+        insert_list(user->tweets, copy);
+
+        // char *tweet = malloc(MAX_TWEET_LENGHT);
+        // fgets(tweet, MAX_TWEET_LENGHT, stdin);
+        // puts(tweet);
+        // printf("@%s: %s\n", user->username, cad);
 
         /*TODO: falta guardar la lista de los tweets del usuario*/
         timeline(user);
@@ -128,6 +133,9 @@ void timeline(User* user){
     }else if (strcmp(comandos, "logout") == 0){
         /*Vuelve al prompt inicial*/
         function();
+    }else if (strcmp(comandos, "print") == 0) { //para testear imprimiendo la lista de twits
+        printf("\nel comando introducido fue: %s\n", comandos);
+        print_tweets_list(user->tweets);
     }
     printf("+--------------------+-------------------+\n");
     /* TODO: timeline del usuario con los tweets de las personas que sigue*/
@@ -135,8 +143,6 @@ void timeline(User* user){
     /* TODO:    - + "tweet del usuario logeado"*/
     /* TODO:    - @user: entrar en perfil de user   */
     /* TODO:        -imprimir todos sus tweets*/
-
-    printf("Falta hacer el login\n");
 }
 
 /**
