@@ -76,7 +76,6 @@ void timeline(User* user){
         {
 
             printf("Perfil de %s\n", perfil->username);
-            /*TODO: falta mostrar los tweets del perfil a buscar*/
             print_tweets_list(perfil->tweets, &comandosLogged[1]);
             printf("+--------------------+-------------------+\n");
             printf("follow");

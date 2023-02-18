@@ -14,26 +14,6 @@ int main() {
     for (i = 0; i < MAX_TABLE_LENGTH; i++) {
         hashTable[i] = create_list();
     }
-   
-    /* usuario loggeado de prueba1: */
-    char *username = malloc(MAX_USER_LENGTH);
-    char *password = malloc(MAX_PASSWORD_LENGTH);
-    username = "nestor";
-    password = "hola";
-    int index = hash(username);
-    int password_hash = hash(password);
-    User *user = create_user(username, password_hash);
-    insert_list(hashTable[index], user);
-
-    /* usuario loggeado de prueba2: */
-    username = malloc(MAX_USER_LENGTH);
-    password = malloc(MAX_PASSWORD_LENGTH);
-    username = "felix";
-    password = "jkl";
-    index = hash(username);
-    password_hash = hash(password);
-    user = create_user(username, password_hash);
-    insert_list(hashTable[index], user);
 
     /* It's a function that asks the user to login, signup or leave. If the user chooses to login, it
     calls

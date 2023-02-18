@@ -3,8 +3,6 @@
 #include "user.h"
 #include "linkedList.h"
 
-/* Actividad Pendiente: No permitir USERS repeditos. Verificar Passwords. Encriptarlas */
-
 /* Recibe como parametro un apuntador a cualquier tipo de dato. Se crea un nodo asociado*/
 Node *create_node(void *value)
 {

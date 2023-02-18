@@ -6,8 +6,6 @@
 
 /* Crea un Usuario. Retorna el apuntador de ese usuario */
 User *create_user(char username[], int password){
-    /* Pendiente encriptar password */
-    /* Pendiente definir Linked List de Tweets*/
     User *user = (User *)malloc(sizeof(User));
     user->username = username;
     user->password_hash = password;
